@@ -34,7 +34,23 @@
                     <RowDefinition Height="9*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0"></Grid>
+                <Grid Grid.Row="0" >
+                    <ListView x:Name="FileViewer" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" HorizontalAlignment="Stretch"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Height="70" Width="40" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                                    <Image HorizontalAlignment="Center" Source="{Binding ImageData}"  VerticalAlignment="Center" Stretch="UniformToFill" />
+                                    <TextBlock HorizontalAlignment="Center" Width="40" Text="{Binding FileName}" VerticalAlignment="Bottom" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
                 <Grid Grid.Row="1">
                     <Button x:Name="BrowseButton" Content="Browse a file" HorizontalAlignment="Center"
                             VerticalAlignment="Center" Click="BrowseButton_Click"/>

@@ -19,3 +19,6 @@ C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\
 C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\ref\FileUpload.dll
 C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload.pdb
 C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload.genruntimeconfig.cache
+C:\Users\Administrator\Downloads\fileupload\FileUpload\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload.csproj.CopyComplete
+C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload.csproj.ResolveComReference.cache
