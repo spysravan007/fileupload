@@ -35,7 +35,7 @@ class FileListAPI(Resource):
         file_obj.file_path = str(file_obj.file_id) + "_" + uploaded_file.filename
         uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_obj.file_path))
         db.session.commit()
-        return jsonify({"message": "Saved successfully"})
+        return jsonify({"message": "Saved successfully", "data": file_obj.json})
 
 class FileAPI(Resource):
     def put(self, file_id):

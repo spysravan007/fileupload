@@ -35,23 +35,43 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" >
-                    <ListView x:Name="FileViewer" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <ListView x:Name="FileViewer" HorizontalAlignment="Stretch" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="4" HorizontalAlignment="Stretch"/>
+                                <UniformGrid Columns="5" HorizontalAlignment="Stretch" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Height="70" Width="40" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Center">
-                                    <Image HorizontalAlignment="Center" Source="{Binding ImageData}"  VerticalAlignment="Center" Stretch="UniformToFill" />
-                                    <TextBlock HorizontalAlignment="Center" Width="40" Text="{Binding FileName}" VerticalAlignment="Bottom" />
+                                <StackPanel Height="70"  Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                    <Image Width="50" HorizontalAlignment="Center" Source="{Binding ImageData}"  VerticalAlignment="Top" />
+                                    <TextBlock TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Center" Text="{Binding FileName}" VerticalAlignment="Bottom" />
+                                    <StackPanel.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Download" Click="DownloadFile" Tag="{Binding FilePath}">
+                                                <MenuItem.Icon>
+                                                    <Image Source="assets/download_icon.png" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Delete" Click="DeleteFile" Tag="{Binding FileID}">
+                                                <MenuItem.Icon>
+                                                    <Image Source="assets/delete_icon.png" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </StackPanel.ContextMenu>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </Grid>
                 <Grid Grid.Row="1">
+                    <ProgressBar Minimum="0" Maximum="100" Value="0" x:Name="pBar" Visibility="Hidden"/>
                     <Button x:Name="BrowseButton" Content="Browse a file" HorizontalAlignment="Center"
                             VerticalAlignment="Center" Click="BrowseButton_Click"/>
                 </Grid>

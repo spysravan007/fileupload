@@ -22,3 +22,7 @@ C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\
 C:\Users\Administrator\Downloads\fileupload\FileUpload\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
 C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload.csproj.CopyComplete
 C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload.csproj.ResolveComReference.cache
+C:\Users\Administrator\Downloads\fileupload\FileUpload\bin\Debug\net6.0-windows\assets\delete_icon.png
+C:\Users\Administrator\Downloads\fileupload\FileUpload\bin\Debug\net6.0-windows\assets\download_icon.png
+C:\Users\Administrator\Downloads\fileupload\FileUpload\obj\Debug\net6.0-windows\FileUpload_Content.g.cs
+C:\Users\Administrator\Downloads\fileupload\FileUpload\bin\Debug\net6.0-windows\Syroot.KnownFolders.dll
