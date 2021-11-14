@@ -60,4 +60,4 @@ db.create_all()
 api.add_resource(FileAPI, '/file/<int:file_id>', endpoint = 'file')
 api.add_resource(FileListAPI, '/files', endpoint = 'files')
 
-app.run(host="0.0.0.0")
+app.run(host="0.0.0.0", debug=True)
