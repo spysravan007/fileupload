@@ -39,7 +39,7 @@ namespace FileUpload
         private void AddFileToView(String file_id, String file_name, String file_desc, String file_path)
         {
             var bmp = GetFileIcon(file_name).ToBitmap();
-            this.FileViewer.Items.Add(new FileData { FileID = file_id, FileDesc = file_desc, FilePath = file_path, FileName = file_name, ImageData = ToBitmapImage(bmp) });
+            FileViewer.Items.Add(new FileData { FileID = file_id, FileDesc = file_desc, FilePath = file_path, FileName = file_name, ImageData = ToBitmapImage(bmp) });
         }
 
         public static System.Drawing.Icon GetFileIcon(string name)
@@ -132,23 +132,33 @@ namespace FileUpload
             if (result == true)
             {
                 String filePath = openFileDlg.FileName;
-                UploadFile(filePath);
+                Task.Factory.StartNew(() => UploadFile(filePath)).ContinueWith(res => {
+                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                        pBar.Visibility = Visibility.Hidden;
+                        pBar.Value = 0;
+                        BrowseButton.Visibility = Visibility.Visible;
+                        JObject obj = res.Result;
+                        AddFileToView(obj.GetValue("file_id").ToString(), obj.GetValue("file_name").ToString(), obj.GetValue("file_desc").ToString(), obj.GetValue("file_path").ToString());
+                    }));
+                });
             }
         }
 
-        private async void UploadFile(String filePath)
+        private JObject UploadFile(String filePath)
         {
-            this.BrowseButton.Visibility = Visibility.Hidden;
-            this.pBar.Visibility = Visibility.Visible;
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                BrowseButton.Visibility = Visibility.Hidden;
+                pBar.Visibility = Visibility.Visible;
+            }));
             string uploadURL = "http://localhost:5000/files";
             HttpClient client = new HttpClient();
             Byte[] fileContent = System.IO.File.ReadAllBytes(filePath);
             using (var multiPartStream = new MultipartFormDataContent())
             {
                 var uploaded_file = new ProgressableStreamContent(new StreamContent(File.OpenRead(filePath)), (sent, total) => {
-                    //Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate {
-                    //    pBar.Dispatcher.BeginInvoke((Action)(() => pBar.Value = (int)(sent * 100 / total)));
-                    //}));
+                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                        pBar.Dispatcher.BeginInvoke((Action)(() => pBar.Value = (int)(sent * 100 / total)));
+                    }));
                 });
                 multiPartStream.Add(new StringContent(System.IO.Path.GetFileName(filePath)), "file_name");
                 multiPartStream.Add(new StringContent("file_desc"), "file_desc");
@@ -162,12 +172,11 @@ namespace FileUpload
                         JObject obj = JObject.Parse(response.Content.ReadAsStringAsync().Result);
                         Trace.WriteLine(obj.GetValue("message"));
                         obj = JObject.Parse(obj.GetValue("data").ToString());
-                        AddFileToView(obj.GetValue("file_id").ToString(), obj.GetValue("file_name").ToString(), obj.GetValue("file_desc").ToString(), obj.GetValue("file_path").ToString());
-                        this.pBar.Visibility = Visibility.Hidden;
-                        this.BrowseButton.Visibility = Visibility.Visible;
+                        Trace.WriteLine("here 1");
+                        return obj;
                     }
                 }
-
+                return null;
             }
         }
     }
