@@ -18,7 +18,7 @@
                     <GradientStop Color="#bdc3c7" Offset="1"/>
                 </LinearGradientBrush>
             </StackPanel.Background>
-            <Label  Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label FontFamily="Calibri" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">
                 Digital Toolbox
             </Label>
         </StackPanel>
@@ -37,24 +37,40 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
-                                <Label MouseDown="MainButtonClicked" HorizontalAlignment="Stretch" Content="{Binding Category}">
-
+                                <Label FontFamily="Calibri" MouseLeftButtonDown="MainButtonLeftClicked" HorizontalAlignment="Stretch">
+                                    <Label.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontSize" Value="18" />
+                                            <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+                                        </Style>
+                                    </Label.Resources>
                                     <Label.Triggers>
-                                        <EventTrigger RoutedEvent="Label.MouseDown">
+                                        <EventTrigger RoutedEvent="Label.MouseLeftButtonDown">
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation From="0" To="400" Duration="0:0:0.3"
+                                                    <DoubleAnimation From="0" To="400" Duration="0:0:0.5"
                                             Storyboard.TargetName="FilesListView"
                                             Storyboard.TargetProperty="MaxHeight"/>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger>
                                     </Label.Triggers>
-
-
+                                    <Label.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Upload" Click="HandleUploadFile" Tag="{Binding Category}">
+                                                <MenuItem.Icon>
+                                                    <Image Source="assets/upload_icon.png" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Label.ContextMenu>
+                                    <TextBlock>
+                                        <Run Text="&#xE0E5;" />
+                                        <Run Text=" " />
+                                        <Run Text="{Binding Category}" />
+                                    </TextBlock>
                                 </Label>
-                                
-                                <ListView x:Name="FilesListView" Visibility="Collapsed" Background="#EEE" ItemsSource="{Binding FilesData}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView x:Name="FilesListView" Visibility="Collapsed" Background="#EEE" ItemsSource="{Binding FilesData}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                     <ListView.ItemContainerStyle>
                                         <Style TargetType="ListViewItem">
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -63,7 +79,7 @@
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Vertical">
-                                                <Label HorizontalAlignment="Stretch" Content="{Binding FileName}"/>
+                                                <Label FontSize="12" HorizontalAlignment="Stretch" Content="{Binding FileName}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
@@ -74,9 +90,10 @@
                 </ListView>
             </Grid>
             <Grid Grid.Row="1">
-                <ProgressBar Minimum="0" Maximum="100" Value="0" x:Name="pBar" Visibility="Hidden"/>
-                <Button x:Name="BrowseButton" Content="Browse a file" HorizontalAlignment="Center"
-                            VerticalAlignment="Center" Click="BrowseButton_Click"/>
+                <TabControl>
+                    <TabItem Header="Tab 1">xyz</TabItem>
+                    <TabItem Header="Tab 2">abc</TabItem>
+                </TabControl>
             </Grid>
         </Grid>
     </Grid>

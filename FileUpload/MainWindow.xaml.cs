@@ -69,13 +69,9 @@ namespace FileUpload
             }
         }
 
-        public void MainButtonClicked(object sender, RoutedEventArgs e)
+        public void MainButtonLeftClicked(object sender, RoutedEventArgs e)
         {
             ListView lv = VisualTreeHelper.GetChild((sender as Label).Parent, 1) as ListView;
-            //double actualHeight = lv.ActualHeight;
-            //DoubleAnimation animation = new DoubleAnimation(0, actualHeight, TimeSpan.FromSeconds(1));
-            ////animation.Completed += new EventHandler(animation_Completed);
-            //lv.BeginAnimation(Height);
             if (lv.Visibility == Visibility.Collapsed)
                 lv.Visibility = Visibility.Visible;
             else
@@ -119,31 +115,32 @@ namespace FileUpload
             //}
         }
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private void HandleUploadFile(object sender, RoutedEventArgs e)
         {         
             Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
             Nullable<bool> result = openFileDlg.ShowDialog();
             if (result == true)
             {
                 String filePath = openFileDlg.FileName;
-                Task.Factory.StartNew(() => UploadFile(filePath)).ContinueWith(res => {
-                    Application.Current.Dispatcher.Invoke(new Action(() => {
-                        pBar.Visibility = Visibility.Hidden;
-                        pBar.Value = 0;
-                        BrowseButton.Visibility = Visibility.Visible;
-                        JObject obj = res.Result;
-                        AddFileToView(obj.GetValue("file_id").ToString(), obj.GetValue("file_name").ToString(), obj.GetValue("file_desc").ToString(), obj.GetValue("file_path").ToString());
-                    }));
+                Task.Factory.StartNew(() => UploadFile(filePath, (sender as MenuItem).Tag.ToString() )).ContinueWith(res => {
+                    //Application.Current.Dispatcher.Invoke(new Action(() => {
+                    //    pBar.Visibility = Visibility.Hidden;
+                    //    pBar.Value = 0;
+                    //    BrowseButton.Visibility = Visibility.Visible;
+                    //    JObject obj = res.Result;
+                    //    AddFileToView(obj.GetValue("file_id").ToString(), obj.GetValue("file_name").ToString(), obj.GetValue("file_desc").ToString(), obj.GetValue("file_path").ToString());
+                    //}));
                 });
             }
         }
 
-        private JObject UploadFile(String filePath)
+        private JObject UploadFile(String filePath, String category)
         {
-            Application.Current.Dispatcher.Invoke(new Action(() => {
-                BrowseButton.Visibility = Visibility.Hidden;
-                pBar.Visibility = Visibility.Visible;
-            }));
+
+            //Application.Current.Dispatcher.Invoke(new Action(() => {
+            //    BrowseButton.Visibility = Visibility.Hidden;
+            //    pBar.Visibility = Visibility.Visible;
+            //}));
             string uploadURL = "http://localhost:5000/files";
             HttpClient client = new HttpClient();
             Byte[] fileContent = System.IO.File.ReadAllBytes(filePath);
@@ -155,7 +152,7 @@ namespace FileUpload
                     }));
                 });
                 multiPartStream.Add(new StringContent(System.IO.Path.GetFileName(filePath)), "file_name");
-                multiPartStream.Add(new StringContent("file_desc"), "file_desc");
+                multiPartStream.Add(new StringContent("file_desc"), category);
                 multiPartStream.Add(uploaded_file, "uploaded_file", System.IO.Path.GetFileName(filePath));
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uploadURL);
                 request.Content = multiPartStream;
@@ -166,7 +163,6 @@ namespace FileUpload
                         JObject obj = JObject.Parse(response.Content.ReadAsStringAsync().Result);
                         Trace.WriteLine(obj.GetValue("message"));
                         obj = JObject.Parse(obj.GetValue("data").ToString());
-                        Trace.WriteLine("here 1");
                         return obj;
                     }
                 }
