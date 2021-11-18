@@ -147,9 +147,9 @@ namespace FileUpload
             using (var multiPartStream = new MultipartFormDataContent())
             {
                 var uploaded_file = new ProgressableStreamContent(new StreamContent(File.OpenRead(filePath)), (sent, total) => {
-                    Application.Current.Dispatcher.Invoke(new Action(() => {
-                        pBar.Dispatcher.BeginInvoke((Action)(() => pBar.Value = (int)(sent * 100 / total)));
-                    }));
+                    //Application.Current.Dispatcher.Invoke(new Action(() => {
+                    //    pBar.Dispatcher.BeginInvoke((Action)(() => pBar.Value = (int)(sent * 100 / total)));
+                    //}));
                 });
                 multiPartStream.Add(new StringContent(System.IO.Path.GetFileName(filePath)), "file_name");
                 multiPartStream.Add(new StringContent("file_desc"), category);

@@ -23,78 +23,92 @@
             </Label>
         </StackPanel>
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" >
-                <ListView x:Name="CategoryViewer" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <Label FontFamily="Calibri" MouseLeftButtonDown="MainButtonLeftClicked" HorizontalAlignment="Stretch">
-                                    <Label.Resources>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="FontSize" Value="18" />
-                                            <Setter Property="FontFamily" Value="Segoe UI Symbol" />
-                                        </Style>
-                                    </Label.Resources>
-                                    <Label.Triggers>
-                                        <EventTrigger RoutedEvent="Label.MouseLeftButtonDown">
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation From="0" To="400" Duration="0:0:0.5"
+            <TabControl TabStripPlacement="Bottom">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="C:\Users\Administrator\Downloads\fileupload\FileUpload\assets\tab1_icon.png" Width="80" Height="40" ></Image>
+                            <TextBlock Width="80" TextAlignment="Center">Tools</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <ListView x:Name="CategoryViewer" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <Label FontFamily="Calibri" MouseLeftButtonDown="MainButtonLeftClicked" HorizontalAlignment="Stretch">
+                                        <Label.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="FontSize" Value="18" />
+                                                <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+                                            </Style>
+                                        </Label.Resources>
+                                        <Label.Triggers>
+                                            <EventTrigger RoutedEvent="Label.MouseLeftButtonDown">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation From="0" To="400" Duration="0:0:0.5"
                                             Storyboard.TargetName="FilesListView"
                                             Storyboard.TargetProperty="MaxHeight"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                    </Label.Triggers>
-                                    <Label.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Upload" Click="HandleUploadFile" Tag="{Binding Category}">
-                                                <MenuItem.Icon>
-                                                    <Image Source="assets/upload_icon.png" />
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                        </ContextMenu>
-                                    </Label.ContextMenu>
-                                    <TextBlock>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Label.Triggers>
+                                        <Label.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Upload" Click="HandleUploadFile" Tag="{Binding Category}">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="assets/upload_icon.png" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Label.ContextMenu>
+                                        <TextBlock>
                                         <Run Text="&#xE0E5;" />
                                         <Run Text=" " />
                                         <Run Text="{Binding Category}" />
-                                    </TextBlock>
-                                </Label>
-                                <ListView x:Name="FilesListView" Visibility="Collapsed" Background="#EEE" ItemsSource="{Binding FilesData}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                                    <ListView.ItemContainerStyle>
-                                        <Style TargetType="ListViewItem">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Vertical">
-                                                <Label FontSize="12" HorizontalAlignment="Stretch" Content="{Binding FileName}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-            <Grid Grid.Row="1">
-                <TabControl>
-                    <TabItem Header="Tab 1">xyz</TabItem>
-                    <TabItem Header="Tab 2">abc</TabItem>
-                </TabControl>
-            </Grid>
+                                        </TextBlock>
+                                    </Label>
+                                    <ListView x:Name="FilesListView" Visibility="Collapsed" Background="#EEE" ItemsSource="{Binding FilesData}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical">
+                                                    <Label FontSize="12" HorizontalAlignment="Stretch" Content="{Binding FileName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="C:\Users\Administrator\Downloads\fileupload\FileUpload\assets\tab2_icon.png" Width="80" Height="40" ></Image>
+                            <TextBlock TextAlignment="Center" Width="80">Updates</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="C:\Users\Administrator\Downloads\fileupload\FileUpload\assets\tab3_icon.png" Width="80" Height="40" ></Image>
+                            <TextBlock TextAlignment="Center" Width="80" >About</TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem> 
+            </TabControl>
         </Grid>
     </Grid>
 </Window>
