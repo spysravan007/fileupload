@@ -28,35 +28,46 @@
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" >
-                <ListView x:Name="FileViewer" HorizontalAlignment="Stretch" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView x:Name="CategoryViewer" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="1" HorizontalAlignment="Stretch" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Height="70"  Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                <TextBlock TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Center" Text="{Binding FileName}" VerticalAlignment="Bottom" />
-                                <!--<StackPanel.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Download" Click="DownloadFile" Tag="{Binding FilePath}">
-                                            <MenuItem.Icon>
-                                                <Image Source="assets/download_icon.png" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Header="Delete" Click="DeleteFile" Tag="{Binding FileID}">
-                                            <MenuItem.Icon>
-                                                <Image Source="assets/delete_icon.png" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </StackPanel.ContextMenu>-->
+                            <StackPanel Orientation="Vertical">
+                                <Label MouseDown="MainButtonClicked" HorizontalAlignment="Stretch" Content="{Binding Category}">
+
+                                    <Label.Triggers>
+                                        <EventTrigger RoutedEvent="Label.MouseDown">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation From="0" To="400" Duration="0:0:0.3"
+                                            Storyboard.TargetName="FilesListView"
+                                            Storyboard.TargetProperty="MaxHeight"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Label.Triggers>
+
+
+                                </Label>
+                                
+                                <ListView x:Name="FilesListView" Visibility="Collapsed" Background="#EEE" ItemsSource="{Binding FilesData}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <Label HorizontalAlignment="Stretch" Content="{Binding FileName}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

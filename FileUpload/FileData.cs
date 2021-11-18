@@ -23,26 +23,11 @@ namespace FileUpload
             set { this._FileID = value; }
         }
 
-        private string _FileDesc;
-        public string FileDesc
-        {
-            get { return this._FileDesc; }
-            set { this._FileDesc = value; }
-        }
-
         private string _FilePath;
         public string FilePath
         {
             get { return this._FilePath; }
             set { this._FilePath = value; }
-        }
-
-
-        private System.Windows.Media.Imaging.BitmapImage _ImageData;
-        public System.Windows.Media.Imaging.BitmapImage ImageData
-        {
-            get { return this._ImageData; }
-            set { this._ImageData = value; }
         }
 
     }

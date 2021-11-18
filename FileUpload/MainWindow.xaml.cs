@@ -20,6 +20,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -38,36 +39,17 @@ namespace FileUpload
 
         private void AddFileToView(String file_id, String file_name, String file_desc, String file_path)
         {
-            var bmp = GetFileIcon(file_name).ToBitmap();
-            FileViewer.Items.Add(new FileData { FileID = file_id, FileDesc = file_desc, FilePath = file_path, FileName = file_name, ImageData = ToBitmapImage(bmp) });
+            //CategoryViewer.Items.Add(new CategoryData { Category = file_id, FileDesc = file_desc, FilePath = file_path, FileName = file_name, ImageData = ToBitmapImage(bmp) });
         }
 
-        public static System.Drawing.Icon GetFileIcon(string name)
+        private void AddCategoryToView(String category, JArray data)
         {
-            Shell32.Shfileinfo shfi = new Shell32.Shfileinfo();
-            uint flags = Shell32.ShgfiIcon | Shell32.ShgfiUsefileattributes;
-            flags += Shell32.ShgfiLinkoverlay;
-            flags += Shell32.ShgfiLargeicon;
-            Shell32.SHGetFileInfo(name, Shell32.FileAttributeNormal, ref shfi, (uint)System.Runtime.InteropServices.Marshal.SizeOf(shfi), flags);
-            System.Drawing.Icon icon = (System.Drawing.Icon) System.Drawing.Icon.FromHandle(shfi.hIcon).Clone();
-            User32.DestroyIcon(shfi.hIcon);
-            return icon;
-        }
-
-        public static BitmapImage ToBitmapImage(Bitmap bitmap)
-        {
-            using (var memory = new MemoryStream())
+            List<FileData> files = new List<FileData>();
+            foreach (JObject file in data)
             {
-                bitmap.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-                return bitmapImage;
+                files.Add(new FileData{ FileID = file.GetValue("file_name").ToString(), FileName = file.GetValue("file_name").ToString(), FilePath = file.GetValue("file_path").ToString() });
             }
+            CategoryViewer.Items.Add(new CategoryData { Category = category, FilesData = files } );
         }
 
         private async void GetFiles()
@@ -78,14 +60,26 @@ namespace FileUpload
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var objects = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     JArray array = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     foreach (JObject obj in array.Children<JObject>())
                     {
-                        AddFileToView(obj.GetValue("file_id").ToString(), obj.GetValue("file_name").ToString(), obj.GetValue("file_desc").ToString(), obj.GetValue("file_path").ToString());
+                        AddCategoryToView(obj.GetValue("category").ToString(), JArray.Parse(obj.GetValue("data").ToString()));
                     }
                 }
             }
+        }
+
+        public void MainButtonClicked(object sender, RoutedEventArgs e)
+        {
+            ListView lv = VisualTreeHelper.GetChild((sender as Label).Parent, 1) as ListView;
+            //double actualHeight = lv.ActualHeight;
+            //DoubleAnimation animation = new DoubleAnimation(0, actualHeight, TimeSpan.FromSeconds(1));
+            ////animation.Completed += new EventHandler(animation_Completed);
+            //lv.BeginAnimation(Height);
+            if (lv.Visibility == Visibility.Collapsed)
+                lv.Visibility = Visibility.Visible;
+            else
+                lv.Visibility = Visibility.Collapsed;
         }
 
         private async void DownloadFile(object sender, RoutedEventArgs e)
@@ -115,14 +109,14 @@ namespace FileUpload
 
         private void DeleteFileFromView(String file_id)
         {
-            foreach(FileData f in this.FileViewer.Items)
-            {
-                if(f.FileID == file_id)
-                {
-                    this.FileViewer.Items.Remove(f);
-                    break;
-                }
-            }
+            //foreach(FileData f in this.FileViewer.Items)
+            //{
+            //    if(f.FileID == file_id)
+            //    {
+            //        this.FileViewer.Items.Remove(f);
+            //        break;
+            //    }
+            //}
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
